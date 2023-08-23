@@ -1,13 +1,15 @@
 // importing a CommonJS module
 const express = require('express'); 
-
-// import/require users-router.js
+const { 
+  logger,
+} = require ('./middleware/middleware');
 
 
 const server = express();
 
 // remember express by default cannot parse JSON in request bodies, so use this code 
 server.use(express.json());
+server.use(logger);
 
 // global middlewares and the user's router need to be connected here
 
