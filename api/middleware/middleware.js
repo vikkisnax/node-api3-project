@@ -48,8 +48,18 @@ function validateUser(req, res, next) {
 }
 
 function validatePost(req, res, next) {
-  console.log('validatePost:', validatePost)
-  next()
+  // console.log('validatePost:', validatePost)
+  // next()
+  const { text } = req.body;
+  if (!text || !text.trim()){
+    res.status(400).json({
+      message: "missing required text field",
+    })
+  } else {
+    //now on the req obj we can console log it -- in router file -- trim white space
+    req.text = text.trim()
+    next()
+  }
 }
 
 // do not forget to expose these functions to other modules
