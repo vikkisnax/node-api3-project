@@ -2,8 +2,9 @@
 const express = require('express');
 
 // You will need `users-model.js` and `posts-model.js` both
-const User = require('../users/users-model')
+const User = require('./users-model')
 const Post = require('../posts/posts-model')
+
 // The middleware functions also need to be required
 const { 
   validateUserId,
@@ -14,10 +15,13 @@ const {
 //remember to export this 
 const router = express.Router();
 
-
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   // RETURN AN ARRAY WITH ALL THE USERS
-
+  User.get()
+    .then(users => {
+        res.json(users)
+    }) 
+    .catch(next)
 });
 
 router.get('/:id', validateUserId, (req, res) => {
@@ -59,6 +63,19 @@ router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
   console.log(req.user);
   console.log(req.text);
 });
+
+
+// ERROR HANDLING MW at the end of this route
+router.use((err, req, res, next) => { //eslint-disable-line
+  res.status(err.status || 500).json({
+    customMessage: "something happened inside psots router",
+    message: err.message,
+    stack: err.stack,
+  })
+})
+
+
+
 
 // do not forget to export the router
 module.exports = router;

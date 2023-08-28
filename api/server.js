@@ -10,7 +10,7 @@ const usersRouter = require('./users/users-router');
 // remember express by default cannot parse JSON in request bodies, so use this code 
 server.use(express.json());
 
-// so we can use it in the app
+// so we can use it in the app - runs everytime 
 server.use(logger);
 
 // w/e route/endpoint starts with this will go to there 
